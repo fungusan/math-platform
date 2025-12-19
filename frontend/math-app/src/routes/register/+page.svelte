@@ -3,21 +3,26 @@
     import Footer from '../../lib/components/Footer.svelte';
 </script>
 
-<NavBar activePage="login" />
+<NavBar activePage="register" />
 
 <main class="auth-container">
     <div class="auth-grid">
         <section class="form-section">
             <header class="form-header">
                 <span class="label">Step 01</span>
-                <h1 class="serif-title">Welcome Back</h1>
-                <p class="subtitle">Continue your story of mathematical discovery.</p>
+                <h1 class="serif-title">Begin Your Journey</h1>
+                <p class="subtitle">Join the collection of math lovers and track your progress.</p>
             </header>
 
             <form on:submit|preventDefault>
                 <div class="input-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" placeholder="e.g. John Doe" />
+                </div>
+
+                <div class="input-group">
                     <label for="email">Email Address</label>
-                    <input type="email" id="email" placeholder="e.g. name@email.com" />
+                    <input type="email" id="email" placeholder="name@email.com" />
                 </div>
 
                 <div class="input-group">
@@ -25,18 +30,18 @@
                     <input type="password" id="password" />
                 </div>
 
-                <button type="submit" class="auth-btn">Sign In <span class="arrow">→</span></button>
+                <button type="submit" class="auth-btn">Create Account <span class="arrow">→</span></button>
             </form>
 
             <p class="switch-auth">
-                New here? <a href="/register">Create an account</a>
+                Already registered? <a href="/login">Sign in here</a>
             </p>
         </section>
 
         <section class="visual-sidebar">
             <div class="green-block">
                 <div class="block-text">
-                    <span class="quote">"Mathematics is the key to the universe."</span>
+                    <span class="quote">"Structure is the beauty of nature's logic."</span>
                 </div>
             </div>
         </section>
