@@ -1,14 +1,34 @@
-<script>
+<script lang="ts">
+    import TopicMenu from './TopicMenu.svelte';
+
     export let topics = [
         'Number and Algebra',
         'Measures, Shape and Space',
         'Data Handling'
     ];
+
+    let showMenu = false;
+    let selectedTopic = "";
+
+    function openMenu(topic: string) {
+        selectedTopic = topic;
+        showMenu = true;
+    }
+
+    function closeMenu() {
+        showMenu = false;
+    }
+
+    function handleStart(event: CustomEvent) {
+        console.log(`Starting ${selectedTopic} with:`, event.detail);
+        // Here you would navigate to the Question Book page
+        showMenu = false;
+    }
 </script>
 
 <div class="editorial-list">
     {#each topics as topic, i}
-        <button class="topic-row">
+        <button class="topic-row" on:click={() => openMenu(topic)}>
             <span class="index">0{i + 1}</span>
             <div class="text-group">
                 <span class="topic-name">{topic}</span>
@@ -18,6 +38,14 @@
         </button>
     {/each}
 </div>
+
+{#if showMenu}
+    <TopicMenu 
+        topic={selectedTopic} 
+        on:close={closeMenu} 
+        on:start={handleStart} 
+    />
+{/if}
 
 <style>
     .editorial-list {

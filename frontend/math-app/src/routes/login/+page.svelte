@@ -1,6 +1,6 @@
 <script lang="ts">
-    import NavBar from '../../lib/components/NavBar.svelte';
-    import Footer from '../../lib/components/Footer.svelte';
+    import NavBar from '../../lib/components/shared/NavBar.svelte';
+    import Footer from '../../lib/components/shared/Footer.svelte';
 </script>
 
 <NavBar activePage="login" />

@@ -1,7 +1,7 @@
 <script lang="ts">
-    import TopicList from '$lib/components/TopicList.svelte';
-    import NavBar from '../lib/components/NavBar.svelte';
-    import Footer from'../lib/components/Footer.svelte';
+    import TopicList from '$lib/components/topics/TopicList.svelte';
+    import NavBar from '../lib/components/shared/NavBar.svelte';
+    import Footer from'../lib/components/shared/Footer.svelte';
 </script>
 
 <svelte:head>

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     export let currentYear = new Date().getFullYear();
 </script>
 
@@ -10,13 +10,15 @@
         </div>
 
         <div class="links-section">
+            <span class="footer-label">Index</span>
             <a href="/">Home</a>
             <a href="/about">About</a>
             <a href="/statistics">Statistics</a>
         </div>
 
         <div class="legal-section">
-            <p>&copy; {currentYear}. Designed by Fungusan.</p>
+            <p>&copy; {currentYear}</p>
+            <p>Designed by Fungusan.</p>
         </div>
     </div>
 </footer>
@@ -82,5 +84,46 @@
             gap: 2rem;
         }
         .legal-section p { text-align: left; }
+    }
+
+    .footer-label {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: #849F5D;
+        margin-bottom: 1rem;
+        font-weight: 700;
+    }
+
+    @media (max-width: 768px) {
+        .colophon {
+            padding: 4rem 1.5rem;
+            margin-top: 4rem;
+        }
+
+        .colophon-inner {
+            grid-template-columns: 1fr; /* Single column stack */
+            gap: 3rem;
+            text-align: center;
+        }
+
+        .brand-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .bio {
+            max-width: 100%;
+        }
+
+        .links-section {
+            align-items: center;
+            display: none;
+        }
+
+        .legal-section p {
+            text-align: center;
+        }
     }
 </style>

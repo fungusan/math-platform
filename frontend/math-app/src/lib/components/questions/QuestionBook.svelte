@@ -1,6 +1,6 @@
 <script lang="ts">
     import { createEventDispatcher } from 'svelte';
-    import Math from '../../lib/components/MathRender.svelte';
+    import Math from './MathRender.svelte';
 
     interface Option {
         key: string;
@@ -43,7 +43,8 @@
         <div class="tag-container">
             <p 
                 class="difficulty-tag"
-                style="color: {question.difficulty === "hard" ? '#FF6B6B' : question.difficulty === "medium" ? '#FFA726' : '#849F5D'};"
+                style="color: {question.difficulty === "hard" ? '#FF6B6B' : question.difficulty === "medium" ? '#FFA726' : '#849F5D'};
+                    border-color: {question.difficulty === "hard" ? '#FF6B6B' : question.difficulty === "medium" ? '#FFA726' : '#849F5D'};"
             >
                 {question.difficulty}
             </p>
@@ -81,10 +82,10 @@
     /* Styling remains identical to the previous editorial version */
     .book-page-container {
         padding: 2rem;
-        height: 100%;
+        min-height: calc(100vh - 80px);
         display: flex;
         justify-content: center;
-        align-items: center;
+        align-items: flex-start;
     }
 
     .book-page {
@@ -93,6 +94,7 @@
         max-width: 800px;
         min-height: 600px;
         padding: 4rem;
+        padding-bottom: 6rem;
         box-shadow: 10px 10px 0px #F4F5F0;
         border: 1px solid #E6E8E2;
         border-radius: 4px;

@@ -1,8 +1,8 @@
 <script lang="ts">
-    import NavBar from '../../lib/components/NavBar.svelte';
-    import Footer from '../../lib/components/Footer.svelte';
-    import UserInfo from '../../lib/components/UserInfo.svelte';
-    import Stat from '../../lib/components/Stat.svelte';
+    import NavBar from '../../lib/components/shared/NavBar.svelte';
+    import Footer from '../../lib/components/shared/Footer.svelte';
+    import UserInfo from '../../lib/components/users/UserInfo.svelte';
+    import Stat from '../../lib/components/users/Stat.svelte';
 
     // Mock Data
     const userData = {
