@@ -94,7 +94,7 @@
         max-width: 800px;
         min-height: 600px;
         padding: 4rem;
-        padding-bottom: 6rem;
+        padding-bottom: 8rem;
         box-shadow: 10px 10px 0px #F4F5F0;
         border: 1px solid #E6E8E2;
         border-radius: 4px;
@@ -113,14 +113,6 @@
         margin-bottom: 1rem;
         font-family: serif;
         font-style: italic;
-    }
-
-    .question-text {
-        font-family: serif;
-        font-size: 1.25rem;
-        line-height: 1.4;
-        color: #1a1a1a;
-        font-weight: 500;
     }
 
     .tag-container {
@@ -219,5 +211,26 @@
     :global(.katex) {
         font-size: 1.2em;
         color: #1a1a1a;
+    }
+
+    /* Responsive Logic */
+    @media (max-width: 1024px) {
+        .book-page-container {
+            padding: 2rem 1rem; /* Balanced padding for iPad */
+            align-items: center; /* Center the book page */
+        }
+
+        .book-page {
+            padding: 3rem 2rem; /* Reduce desktop's 4rem padding */
+            max-width: 700px;
+            min-height: auto; /* Content drives height */
+        }
+    }
+
+    @media (max-width: 640px) {
+        .book-page {
+            padding: 1rem 1rem 5rem 1rem;
+            box-shadow: 4px 4px 0px #F4F5F0;
+        }
     }
 </style>

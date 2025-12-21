@@ -56,7 +56,7 @@
                 { key: 'C', value: "10" },
                 { key: 'D', value: "12" }
             ]
-        }
+        },
     ];
 
     // 2. STATE MANAGEMENT
@@ -125,53 +125,35 @@
 <Footer />
 
 <style>
-    /* Ensure the page fills height so sidebar looks correct */
-    :global(body, html) {
-        height: 100%;
-        background-color: #FDFCF8; /* Ensure background matches book paper */
-    }
-
     .practice-layout {
-        height: calc(100vh - 80px); /* Adjust based on your navbar height */
         max-width: 1200px;
         margin: 0 auto;
+        padding: 2rem;
     }
 
     .layout-grid {
         display: grid;
-        grid-template-columns: 280px 1fr; /* Fixed sidebar width, flexible content */
-        height: 100%;
+        grid-template-columns: 280px 1fr;
+        gap: 2rem;
+        align-items: start; /* CRITICAL: Prevents sidebar from stretching to match book height */
     }
 
-    .sidebar-container {
-        height: 100%;
-        background: #f8f9fa; /* Slightly darker cream for sidebar contrast */
-    }
-
-    .book-container {
-        height: 100%;
-        overflow-y: auto; /* Allows scrolling if question is very long */
-    }
-
-    /* Responsive design for smaller screens */
-    @media (max-width: 900px) {
+    /* THE FIX: Unify Tablet and Mobile behavior at 1024px */
+    @media (max-width: 1024px) {
         .layout-grid {
-            grid-template-columns: 80px 1fr; /* Shrink sidebar */
-        }
-        /* You might want to hide labels in SideBar.svelte on small screens */
-    }
-
-    @media (max-width: 640px) {
-        .layout-grid {
+            display: flex;
+            flex-direction: column; /* Stack vertically */
             grid-template-columns: 1fr;
-            grid-template-rows: auto 1fr; /* Stack vertically */
         }
+
         .sidebar-container {
-            height: auto;
-            border-right: none;
-            border-bottom: 1px solid #e5e7eb;
-            padding-bottom: 1rem;
+            order: 2; /* Move sidebar to the bottom of the stack */
+            width: 100%;
         }
-        /* In SideBar.svelte, you'd change flex-direction to row for mobile */
+
+        .book-container {
+            order: 1; /* Keep book at the top */
+            width: 100%;
+        }
     }
 </style>

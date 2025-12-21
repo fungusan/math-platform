@@ -36,6 +36,17 @@
         font-size: 1.15rem;
     }
 
+    @media (max-width: 600px) {
+        .unified-renderer {
+            font-size: 1.05rem; /* Slightly smaller text for mobile */
+        }
+        
+        :global(.katex-display) {
+            padding: 0.75rem; /* Tighter padding on mobile */
+            margin: 0.5rem 0 !important;
+        }
+    }
+
     /* Style for Tables stored in your DB */
     :global(.editorial-table) {
         width: 100%;
