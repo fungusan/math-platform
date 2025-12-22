@@ -2,7 +2,7 @@
     function handleEcho() {
         const echoMessage = { message: "hi" };
 
-        fetch('http://localhost:8000//users/echo', {
+        fetch('http://localhost:8000//users/echo/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
