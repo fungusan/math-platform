@@ -1,6 +1,14 @@
 <script lang="ts">
     import NavBar from '../../lib/components/shared/NavBar.svelte';
     import Footer from '../../lib/components/shared/Footer.svelte';
+
+    function handleSubmit(event: SubmitEvent) {
+        const form = event.target as HTMLFormElement;
+
+        const formData = new FormData(form);
+
+        console.log(formData);
+    }
 </script>
 
 <NavBar activePage="register" />
@@ -14,7 +22,7 @@
                 <p class="subtitle">Join the collection of math lovers and track your progress.</p>
             </header>
 
-            <form on:submit|preventDefault>
+            <form on:submit|preventDefault={handleSubmit}>
                 <div class="input-group">
                     <label for="name">Full Name</label>
                     <input type="text" id="name" placeholder="e.g. John Doe" />
