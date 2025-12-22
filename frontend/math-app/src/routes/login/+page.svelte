@@ -1,6 +1,50 @@
 <script lang="ts">
     import NavBar from '../../lib/components/shared/NavBar.svelte';
     import Footer from '../../lib/components/shared/Footer.svelte';
+    import { user, token } from '../../lib/stores/users'; // Adjust path as needed
+    import { goto } from '$app/navigation';
+
+    async function handleSubmit(event: SubmitEvent) {
+        const form = event.target as HTMLFormElement;
+        const formData = new FormData(form);
+
+        // Convert to JSON
+        const data: Record<string, string> = {};
+        formData.forEach((value, key) => {
+            data[key] = (value as string).trim();
+        });
+
+        try {
+            const response = await fetch('http://localhost:8000/users/login/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(`Login failed: ${response.status} - ${JSON.stringify(result)}`);
+            }
+
+            console.log(result);
+
+            // Handle JWT: Store token and user data
+            if (result.token) {
+                $token = result.token; // Updates store and localStorage
+                $user = result.user;   // Updates user store
+
+                // Optional: Redirect to home
+                goto('/');
+            }
+
+        }
+        catch (error) {
+            console.error('Error during login:', error);
+        }
+    }
 </script>
 
 <NavBar activePage="login" />
@@ -14,15 +58,15 @@
                 <p class="subtitle">Continue your story of mathematical discovery.</p>
             </header>
 
-            <form on:submit|preventDefault>
+            <form on:submit|preventDefault={handleSubmit}>
                 <div class="input-group">
                     <label for="email">Email Address</label>
-                    <input type="email" id="email" placeholder="e.g. name@email.com" />
+                    <input type="email" id="email" name="email" placeholder="e.g. name@email.com" />
                 </div>
 
                 <div class="input-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" />
+                    <input type="password" id="password" name="password" />
                 </div>
 
                 <button type="submit" class="auth-btn">Sign In <span class="arrow">→</span></button>

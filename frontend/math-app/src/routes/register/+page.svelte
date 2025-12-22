@@ -1,13 +1,49 @@
 <script lang="ts">
     import NavBar from '../../lib/components/shared/NavBar.svelte';
     import Footer from '../../lib/components/shared/Footer.svelte';
+    import { user, token } from '../../lib/stores/users'; // Adjust path as needed
+    import { goto } from '$app/navigation';
 
-    function handleSubmit(event: SubmitEvent) {
+    async function handleSubmit(event: SubmitEvent) {
         const form = event.target as HTMLFormElement;
-
         const formData = new FormData(form);
 
-        console.log(formData);
+        // Convert to JSON
+        const data: Record<string, string> = {};
+        formData.forEach((value, key) => {
+            data[key] = (value as string).trim();
+        });
+
+        try {
+            const response = await fetch('http://localhost:8000/users/register/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(`Registration failed: ${response.status} - ${JSON.stringify(result)}`);
+            }
+
+            console.log(result);
+
+            // Handle JWT: Store token and user data
+            if (result.token) {
+                $token = result.token; // Updates store and localStorage
+                $user = result.user;   // Updates user store
+
+                // Optional: Redirect to home
+                goto('/');
+            }
+
+        }
+        catch (error) {
+            console.error('Error during registration:', error);
+        }
     }
 </script>
 
@@ -24,18 +60,18 @@
 
             <form on:submit|preventDefault={handleSubmit}>
                 <div class="input-group">
-                    <label for="name">Full Name</label>
-                    <input type="text" id="name" placeholder="e.g. John Doe" />
+                    <label for="user_nname">Full Name</label>
+                    <input type="text" id="user_name" name="user_name" placeholder="e.g. John Doe" required />
                 </div>
 
                 <div class="input-group">
                     <label for="email">Email Address</label>
-                    <input type="email" id="email" placeholder="name@email.com" />
+                    <input type="email" id="email" name="email" placeholder="name@email.com" required />
                 </div>
 
                 <div class="input-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" />
+                    <input type="password" id="password" name="password" required />
                 </div>
 
                 <button type="submit" class="auth-btn">Create Account <span class="arrow">→</span></button>
