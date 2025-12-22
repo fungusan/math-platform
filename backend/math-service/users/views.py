@@ -43,7 +43,7 @@ class UserDetailView(APIView):
             uuid_obj = UUID(id)  # Validates and normalizes (handles with/without hyphens)
             user = get_object_or_404(User, id=uuid_obj)
             serializer = UserSerializer(user)
-            
+
             return Response(serializer.data, status=status.HTTP_200_OK)
         
         except ValueError:
@@ -64,8 +64,35 @@ class RegisterView(APIView):
             # On success
             return Response({
                 'token': str(refresh.access_token),
-                'user': { 'id': user.id, 'user_name': user.user_name }
+                'user': { 'id': str(user.id), 'user_name': user.user_name }
             }, status=status.HTTP_201_CREATED)
+        
+        # On failure
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class LoginView(APIView):
+    def post(self, request):
+        """
+        Log user in
+        """
+
+        serializer = LoginSerializer(data=request.data)
+
+        if serializer.is_valid():
+            user = authenticate(email=serializer.validated_data['email'], 
+                                password=serializer.validated_data['password'])
+
+            if user:
+                refresh = RefreshToken.for_user(user)   # Generate JWT
+
+                # On success
+                return Response({
+                    'token': str(refresh.access_token),
+                    'user': { 'id': str(user.id), 'user_name': user.user_name }
+                }, status=status.HTTP_200_OK)
+            
+            # On invalid credentials
+            return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
         
         # On failure
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
