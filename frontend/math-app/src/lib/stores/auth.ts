@@ -1,5 +1,6 @@
 import { writable } from 'svelte/store';
 import { browser } from '$app/environment';
+import { goto } from '$app/navigation';
 
 export const user = writable(null); // { id, user_name } or null if logged out
 
@@ -15,3 +16,11 @@ token.subscribe(value => {
         }
     }
 });
+
+export function checkAuthAndNavigate(targetPath: string, user: any) {
+    if (!user) {
+        goto('/login?error=unauthorized');
+    } else {
+        goto(targetPath);
+    }
+}

@@ -1,7 +1,7 @@
 <script lang="ts">
     import NavBar from '../../lib/components/shared/NavBar.svelte';
     import Footer from '../../lib/components/shared/Footer.svelte';
-    import { user, token } from '../../lib/stores/users'; // Adjust path as needed
+    import { user, token } from '../../lib/stores/auth'; // Adjust path as needed
     import { goto } from '$app/navigation';
 
     async function handleSubmit(event: SubmitEvent) {
