@@ -6,9 +6,15 @@ class TopicSerializer(serializers.ModelSerializer):
     class Meta:
         model = Topic
         fields = ['topic_id', 'title', 'description']
-        
+
 
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
         fields = ['content', 'difficulty']
+
+
+class ChoiceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Choice
+        fields = ['choice_text']

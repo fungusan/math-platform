@@ -82,4 +82,4 @@ class Choice(models.Model):
         indexes = [models.Index(fields=['order'])]
 
     def __str__(self):
-        return f"Q{self.question_id} - {self.content[:50]}"
+        return f"{self.choice_text} (Order: {self.order})"
