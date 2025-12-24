@@ -21,14 +21,17 @@ class Topic(models.Model):
 class Question(models.Model):
     question_id     =   models.UUIDField(
         primary_key =   True,
-        default     =   uuid.uuid4, 
+        default     =   uuid.uuid4,
         editable    =   False
     )
     
     topic_id    =   models.ForeignKey(Topic, on_delete=models.CASCADE)
     slug        =   models.SlugField(max_length=255, unique=True, editable=False)  # Unique, short slug for UI refs
     content     =   models.TextField()
-    answer_key  =   models.CharField(max_length = 128)
+    answer_key  =   models.PositiveIntegerField(
+        default=0,
+        # validators=[MinValueValidator(0), MaxValueValidator(3)]
+    )
 
     DIFFICULTY_CHOICES = [
         ('easy', 'Easy'),
