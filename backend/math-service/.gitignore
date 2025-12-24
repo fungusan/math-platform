@@ -1,0 +1,10 @@
+# Django specifics
+*.pyc
+**/__pycache__/
+*.pyo
+*.pyd
+*.db
+db.sqlite3
+math_platform/settings.py
+.env
+**/migrations/
