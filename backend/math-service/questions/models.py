@@ -25,7 +25,7 @@ class Question(models.Model):
         editable    =   False
     )
     
-    topic_id    =   models.ForeignKey(Topic, on_delete=models.CASCADE)
+    topic       =   models.ForeignKey(Topic, on_delete=models.CASCADE)
     slug        =   models.SlugField(max_length=255, unique=True, editable=False)  # Unique, short slug for UI refs
     content     =   models.TextField()
     answer_key  =   models.PositiveIntegerField(
@@ -41,15 +41,15 @@ class Question(models.Model):
 
     difficulty  =   models.CharField(max_length=128, choices=DIFFICULTY_CHOICES, default='medium')
 
-    pub_date    =   models.DateTimeField("date published")
+    pub_date    =   models.DateTimeField(default=timezone.now)
 
     class Meta:
-        indexes = [models.Index(fields=['topic_id', 'difficulty'])]
+        indexes = [models.Index(fields=['topic', 'difficulty'])]
 
     def save(self, *args, **kwargs):
         if not self.slug:
             # Short base: Just topic title slugified
-            base = self.topic_id.title.lower()
+            base = self.topic.title.lower()
             slug_base = slugify(base)
 
             # Find the highest increment for this base and add 1
@@ -76,9 +76,11 @@ class Question(models.Model):
 
 
 class Choice(models.Model):
-    question_id     =   models.ForeignKey(Question, on_delete=models.CASCADE)
+    question        =   models.ForeignKey(Question, on_delete=models.CASCADE)
     choice_text     =   models.CharField(max_length = 200)
     order           =   models.PositiveIntegerField(default=0)  # For sequencing (A=1, B=2, etc.)
+
+    pk = models.CompositePrimaryKey('question', 'choice_text', 'order')  # Composite PK: question + choice_text + order
 
     class Meta:
         ordering = ['order']  # Default sort by order ASC on querysets

@@ -1,8 +1,8 @@
-from django.urls import path
-from questions.views import TopicListView, QuestionDetailView
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import SessionViewSet  # Import your ViewSet
 
-from . import views
+router = DefaultRouter()
+router.register(r'sessions', SessionViewSet, basename='session')  # basename for reverse URLs
 
-urlpatterns = [
-
-]
+urlpatterns = router.urls  # This includes all generated paths (e.g., /sessions/, /sessions/{pk}/, /sessions/{pk}/edit/)

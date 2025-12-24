@@ -1,42 +1,53 @@
 from django.db import models
 from django.utils import timezone
+import uuid
+
 from users.models import User
 from questions.models import Question
 
-
 # Create your models here.
 class Session(models.Model):
-    user_id     =   models.ForeignKey(User, on_delete=models.CASCADE)
-    start_at    =   models.DateTimeField("date published")
+    session_id  =   models.UUIDField(
+        primary_key =   True,
+        default     =   uuid.uuid4,
+        editable    =   False
+    )  # Standard PK as sessionID (UUID for uniqueness/security)
+
+    user        =   models.ForeignKey(User, on_delete=models.CASCADE)  # Renamed from user_id for convention
+    start_at    =   models.DateTimeField(default=timezone.now)  # Auto-set on creation
     end_at      =   models.DateTimeField(null=True, blank=True)
     # removed status, as end_at can handle
 
     MODES = [
-        ('daily', 'daily'),
+        ('daily', 'Daily'),
         ('standard', 'Standard'),
         # can be more if we have more features
     ]
 
-    mode        =   models.CharField(max_length=128, choices=MODES, default='standard')
+    mode = models.CharField(max_length=128, choices=MODES, default='standard')
 
     class Meta:
-        unique_together = ['user_id', 'start_at']  # Enforces composite unique key (candidate key)
+        unique_together = ['user', 'start_at']  # Enforce composite unique (user + start_at can't duplicate)
+        indexes = [models.Index(fields=['user', 'start_at'])]  # For fast lookups on the pair
 
     def __str__(self):
-        return f"Session for {self.user.user_name} at {self.start_at}"
-    
+        return f"Session {self.session_id} for {self.user.user_name} at {self.start_at}"
+
 
 class UserAnswer(models.Model):
-    user_id     =   models.ForeignKey(User, on_delete=models.CASCADE)
-    start_at    =   models.ForeignKey(Session, on_delete=models.CASCADE)
-    question_id =   models.ForeignKey(Question, on_delete=models.CASCADE)
+    session     =   models.ForeignKey(Session, on_delete=models.CASCADE)  # Normal FK to Session (references session_id)
+    question    =   models.ForeignKey(Question, on_delete=models.CASCADE)
     answer      =   models.PositiveIntegerField(
-        default=0,
+        null=True,
+        blank=True,
+        default=None,
         # validators=[MinValueValidator(0), MaxValueValidator(3)]
     )
 
+    pk = models.CompositePrimaryKey('session', 'question')  # Composite PK: session + question
+
     class Meta:
-        unique_together = ['user_id', 'start_at']
+        unique_together = ['session', 'question']  # Ensure no duplicate answers per session-question
 
     def __str__(self):
-        return f"Answer for User {self.user_id} in Session starting at {self.start_at} for Question {self.question_id}"
+        return f"Answer for Session {self.session.session} for Question {self.question}"
